@@ -2,6 +2,6 @@
 }
 
 
-div[data-role="header"] > input {
-    width: 50%;
+div[data-role="page"] {
+    background-color: #008f83;
 }

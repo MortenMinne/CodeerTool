@@ -25,6 +25,9 @@
                 <option>Windroos</option>
                 <option>Limonade</option>
             </select>
+
+            <input id="txtCodeWoordC" type="text" value="limonade"/>
+
             <textarea id="txaInputC"></textarea>
 
             <input type="button" value="Codeer" onclick="codeer()" />
@@ -42,7 +45,7 @@
                     <li><a href="#">Decodeer</a></li>
                 </ul>
             </div>
-            
+
         </div>
 
         <div data-role="main" class="ui-content">
@@ -53,6 +56,8 @@
                 <option>Windroos</option>
                 <option>Limonade</option>
             </select>
+
+            <input id="txtCodeWoordD" type="text" value="limonade" />
 
             <input type="button" value="Decodeer" onclick="decodeer()"/>
 
@@ -154,15 +159,19 @@
         ' ': '/'
     };
 
-    var limo = null;'knaap // ' 
+    var limonadealfabet;
 
     function codeer() {
         var input = $('#txaInputC').val();
+        input = input.toLowerCase();
         var code = '';
+        
+        if ($('#cboCodeTC')[0].selectedIndex == 2)
+            createLimonadeAlfabet();
 
         var intI = 0;
         for (intI; intI < input.length; intI++) {
-            var key = input.substring(intI, intI+1) + '';
+            var key = (input.substring(intI, intI+1) + '').toLowerCase();
             switch ($('#cboCodeTC')[0].selectedIndex) {
                 case 0:
                     code += (code == '' || code.substring(code.length - 4, code.length) == ' // ') ? morse[key] : (morse[key] == ' // ') ? morse[key] : ' / ' + morse[key];
@@ -175,6 +184,19 @@
                         code += '/';
                     break;
                 case 2:
+                    var char = input.charAt(intI);
+                    if (char == " ")
+                        code += " "
+                    else {
+                        var index = limonadealfabet.indexOf(char);
+                        var limonadeindex = 0;
+                        if (index < 13) {
+                            limonadeindex = index + 13;
+                        } else {
+                            limonadeindex = index - 13;
+                        }
+                        code += limonadealfabet.charAt(limonadeindex);
+                    }
                     break;
             }
         }
@@ -183,6 +205,87 @@
     }
 
     function decodeer() {
+        var input = $('#txaInputD').val();
+        input = input.toLowerCase();
+        var vals = null;
+        var code = null;
+        var tekst = '';
+        if ($('#cboCodeTD')[0].selectedIndex == 2) {
+            createLimonadeAlfabet();
+            tekst = translate_limonade(input);
+        } else {
+            switch ($('#cboCodeTD')[0].selectedIndex) {
+                case 0:
+                    vals = input.split(" // ");
+                    code = morse;
+                    break;
+                case 1:
+                    vals = input.split("/");
+                    code = windroos;
+                    break;
+            }
+
+            $.each(vals, function (key, val) {
+                var letters = null;
+                switch ($('#cboCodeTD')[0].selectedIndex) {
+                    case 0:
+                        letters = val.split(" / ");
+                        break;
+                    case 1:
+                        letters = val.split(".");
+                        break;
+                }
+
+                $.each(letters, function (key, letter) {
+                    if (letter != '')
+                        tekst += getKeyByValue(code, letter);
+                });
+                tekst += ' ';
+            });
+        }
         
+       
+
+        $('#txaOutputD').val(tekst);
+    }
+
+    function getKeyByValue(obj, value) {
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop)) {
+                if (obj[prop] === value)
+                    return prop;
+            }
+        }
+    }
+
+    function createLimonadeAlfabet() {
+        var alfabet = "abcdefghijklmnopqrstuvwxyz";
+        var limonadewoord = $("#txtCodeWoordC").val();
+        for (var i = 0; i < limonadewoord.length; i++) {
+            var char = limonadewoord.charAt(i);
+            alfabet = alfabet.replace(char, '');
+        }
+        alfabet = limonadewoord + alfabet;
+        limonadealfabet = alfabet;
+    }
+
+    function translate_limonade(code) {
+        var vertaling = "";
+        for (var i = 0; i < code.length; i++) {
+            var char = code.charAt(i);
+            if (char == ' ')
+                vertaling += ' ';
+            else {
+                var index = limonadealfabet.indexOf(char);
+                var limonadeindex = 0;
+                if (index < 13) {
+                    limonadeindex = index + 13;
+                } else {
+                    limonadeindex = index - 13;
+                }
+                vertaling += limonadealfabet.charAt(limonadeindex);
+            }
+        }
+        return vertaling;
     }
 </script>
