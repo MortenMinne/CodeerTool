@@ -1,0 +1,7 @@
+﻿body {
+}
+
+
+div[data-role="header"] > input {
+    width: 50%;
+}

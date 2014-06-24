@@ -1,15 +1,188 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-    <title></title>
+    <title>CodR</title>
+    <link href="Style.css" rel="stylesheet" />
+    <link href="jquery.mobile-1.4.2.min.css" rel="stylesheet" />
+    <script src="jquery-1.10.2.min.js"></script>
+    <script src="jquery.mobile-1.4.2.min.js"></script>-->
 </head>
 <body>
-    <h1>Dag Nancy!</h1>
-    <input type="button" value="Klik hier" onclick="ShowWindow()" />
+    <div data-role="page" id="codeer">
+        <div data-role="header">
+            <h1>CodR</h1>
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#">Codeer</a></li>
+                    <li><a href="#deCodeer">Decodeer</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div data-role="main" class="ui-content">
+            <select id="cboCodeTC">
+                <option>Morse</option>
+                <option>Windroos</option>
+                <option>Limonade</option>
+            </select>
+            <textarea id="txaInputC"></textarea>
+
+            <input type="button" value="Codeer" onclick="codeer()" />
+
+            <textarea id="txaOutputC"></textarea>
+        </div>
+    </div>
+
+    <div data-role="page" id="deCodeer">
+        <div data-role="header">
+            <h1>CodR</h1>
+            <div data-role="navbar">
+                <ul>
+                    <li><a href="#codeer">Codeer</a></li>
+                    <li><a href="#">Decodeer</a></li>
+                </ul>
+            </div>
+            
+        </div>
+
+        <div data-role="main" class="ui-content">
+            <textarea id="txaInputD"></textarea>
+
+            <select id="cboCodeTD">
+                <option>Morse</option>
+                <option>Windroos</option>
+                <option>Limonade</option>
+            </select>
+
+            <input type="button" value="Decodeer" onclick="decodeer()"/>
+
+            <textarea id="txaOutputD"></textarea>
+        </div>
+    </div>
 </body>
 </html>
 <script>
-    function ShowWindow() {
-        window.alert("Hoe was het op 't werk?");
+    var morse = {
+        a: '.-',
+        b: '-...',
+        c: '-.-.',
+        d: '-..',
+        e: '.',
+        f: '..-.',
+        g: '--.',
+        h: '....',
+        i: '..',
+        j: '.---',
+        k: '-.-',
+        l: '.-..',
+        m: '--',
+        n: '-.',
+        o: '---',
+        p: '.--.',
+        q: '--.-',
+        r: '.-.',
+        s: '...',
+        t: '-',
+        u: '..-',
+        v: '...-',
+        w: '.--',
+        x: '-..-',
+        y: '-.--',
+        z: '--..',
+        1: '.----',
+        2: '..---',
+        3: '...--',
+        4: '....-',
+        5: '.....',
+        6: '-....',
+        7: '--...',
+        8: '---..',
+        9: '----.',
+        0: '-----',
+        '.': '.-.-.-',
+        ',': '--.--',
+        '?': '..--..',
+        '!': '..--.',
+        ':': '---...',
+        '-': '-....-',
+        ' ': ' // '
+    };
+
+    var windroos = {
+        a: "NNNO",
+        b: "NONNO",
+        c: "NOONO",
+        d: "OONO",
+        e: "OOZO",
+        f: "ZOOZO",
+        g: "ZOZZO",
+        h: "ZZZO",
+        i: "ZZZW",
+        j: "ZWZZW",
+        k: "ZWWZW",
+        l: "WWZW",
+        m: "WWNW",
+        n: "NWWNW",
+        o: "NWNNW",
+        p: "NNNW",
+        q: "NNNO*",
+        r: "NONNO*",
+        s: "NOONO*",
+        t: "OONO*",
+        u: "OOZO*",
+        v: "ZOOZO*",
+        w: "ZOZZO*",
+        x: "ZZZO*",
+        y: "ZZZW*",
+        z: "ZWZZW*",
+        1: '1',
+        2: '2',
+        3: '3',
+        4: '4',
+        5: '5',
+        6: '6',
+        7: '7',
+        8: '8',
+        9: '9',
+        0: '0',
+        '.': '.',
+        ',': ',',
+        '?': '?',
+        '!': '!',
+        ':': ':',
+        '-': '-',
+        ' ': '/'
+    };
+
+    var limo = null;'knaap // ' 
+
+    function codeer() {
+        var input = $('#txaInputC').val();
+        var code = '';
+
+        var intI = 0;
+        for (intI; intI < input.length; intI++) {
+            var key = input.substring(intI, intI+1) + '';
+            switch ($('#cboCodeTC')[0].selectedIndex) {
+                case 0:
+                    code += (code == '' || code.substring(code.length - 4, code.length) == ' // ') ? morse[key] : (morse[key] == ' // ') ? morse[key] : ' / ' + morse[key];
+                    if (intI == input.length - 1)
+                        code += ' // ';
+                    break;
+                case 1:
+                    code += (code == '' || code.substring(code.length - 1, code.length) == '/') ? windroos[key] : (windroos[key] == '/') ? windroos[key] : '.' + windroos[key];
+                    if (intI == input.length - 1)
+                        code += '/';
+                    break;
+                case 2:
+                    break;
+            }
+        }
+
+        $('#txaOutputC').val(code);
+    }
+
+    function decodeer() {
+        
     }
 </script>
